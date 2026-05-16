@@ -1,0 +1,76 @@
+# Python/cache
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Virtual environments and local env files
+.venv/
+.venv_*/
+venv/
+env/
+*.env
+.env
+
+# Large local data/model artifacts
+data/
+raw/
+models/
+reports/
+*.gguf
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.db
+*.sqlite
+*.sqlite3
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.gz
+*.7z
+*.csv
+*.jsonl
+
+# Keep source schemas/configs/docs tracked even though generated data is ignored.
+!configs/**/*.json
+!schemas/**/*.json
+!server_training/model_manifest.json
+
+# Logs and temporary outputs
+*.log
+*.err
+*.tmp
+tmp/
+temp/
+.cache/
+
+# LaTeX build outputs
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.lot
+*.nav
+*.out
+*.run.xml
+*.snm
+*.synctex.gz
+*.toc
+*.vrb
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

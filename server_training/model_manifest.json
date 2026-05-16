@@ -1,0 +1,16 @@
+{
+  "models": [
+    {
+      "name": "qwen2.5-14b-instruct",
+      "hf_id": "Qwen/Qwen2.5-14B-Instruct",
+      "local_dir": "models/hf/Qwen2.5-14B-Instruct",
+      "notes": "Official Qwen 14B instruction-tuned model. Use this safetensors checkpoint for LoRA/QLoRA fine-tuning, not the GGUF file."
+    },
+    {
+      "name": "deepseek-r1-distill-qwen-14b",
+      "hf_id": "deepseek-ai/DeepSeek-R1-Distill-Qwen-14B",
+      "local_dir": "models/hf/DeepSeek-R1-Distill-Qwen-14B",
+      "notes": "DeepSeek R1 distilled 14B model based on Qwen2.5. Use this safetensors checkpoint for LoRA/QLoRA fine-tuning, not the GGUF file."
+    }
+  ]
+}

@@ -1,0 +1,144 @@
+{
+  "schema_version": "posway-download-manifest-v0.1",
+  "created_for_date": "2026-05-01",
+  "download_root": "pos_way_admet_benchmark/raw/public",
+  "policy": {
+    "download_full_pubchem_compound": false,
+    "download_full_zinc20": false,
+    "reason": "The PDF recommends targeted PubChem/ZINC20 slices. Full PubChem compound and full ZINC20 are too large for this local build and are not required as benchmark ground truth."
+  },
+  "files": [
+    {
+      "source": "chembl",
+      "url": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/latest/LICENSE",
+      "path": "chembl/LICENSE"
+    },
+    {
+      "source": "chembl",
+      "url": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/latest/README",
+      "path": "chembl/README"
+    },
+    {
+      "source": "chembl",
+      "url": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/latest/REQUIRED.ATTRIBUTION",
+      "path": "chembl/REQUIRED.ATTRIBUTION"
+    },
+    {
+      "source": "chembl",
+      "url": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/latest/checksums.txt",
+      "path": "chembl/checksums.txt"
+    },
+    {
+      "source": "chembl",
+      "url": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/latest/chembl_36_release_notes.txt",
+      "path": "chembl/chembl_36_release_notes.txt"
+    },
+    {
+      "source": "chembl",
+      "url": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/latest/schema_documentation.txt",
+      "path": "chembl/schema_documentation.txt"
+    },
+    {
+      "source": "chembl",
+      "url": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/latest/chembl_uniprot_mapping.txt",
+      "path": "chembl/chembl_uniprot_mapping.txt"
+    },
+    {
+      "source": "chembl",
+      "url": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/latest/chembl_36_chemreps.txt.gz",
+      "path": "chembl/chembl_36_chemreps.txt.gz"
+    },
+    {
+      "source": "chembl",
+      "url": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/latest/chembl_36.sdf.gz",
+      "path": "chembl/chembl_36.sdf.gz"
+    },
+    {
+      "source": "chembl",
+      "url": "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/latest/chembl_36_sqlite.tar.gz",
+      "path": "chembl/chembl_36_sqlite.tar.gz"
+    },
+    {
+      "source": "pubchem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/docs/downloads",
+      "path": "pubchem/pubchem_downloads_page.html"
+    },
+    {
+      "source": "pubchem",
+      "url": "https://ftp.ncbi.nlm.nih.gov/pubchem/Compound/CURRENT-Full/SDF/",
+      "path": "pubchem/compound_sdf_index.html"
+    },
+    {
+      "source": "pubchem",
+      "url": "https://ftp.ncbi.nlm.nih.gov/pubchem/Bioassay/CSV/Data/",
+      "path": "pubchem/bioassay_csv_index.html"
+    },
+    {
+      "source": "bindingdb",
+      "url": "https://www.bindingdb.org/rwd/bind/chemsearch/marvin/SDFdownload.jsp?download_file=%2Frwd%2Fbind%2Fdownloads%2FBindingDB_BindingDB_Articles_202605_tsv.zip",
+      "path": "bindingdb/bindingdb_articles_download_page.html"
+    },
+    {
+      "source": "bindingdb",
+      "url": "https://www.bindingdb.org/rwd/bind/downloads/BindingDB_BindingDB_Articles_202605_tsv.zip",
+      "path": "bindingdb/BindingDB_BindingDB_Articles_202605_tsv.zip"
+    },
+    {
+      "source": "toxcast",
+      "url": "https://api.figshare.com/v2/articles/6062623",
+      "path": "toxcast/invitrodb_v4_3_figshare_metadata.json"
+    },
+    {
+      "source": "toxcast",
+      "url": "https://clowder.edap-cluster.com/api/files/68af6bd3e4b02565fc7c3aa8",
+      "path": "toxcast/assay_annotations_invitrodb_v4_3_AUG2024.xlsx"
+    },
+    {
+      "source": "toxcast",
+      "url": "https://clowder.edap-cluster.com/api/files/68af6bd3e4b02565fc7c3aa0",
+      "path": "toxcast/assay_target_mappings_invitrodb_v4_3_AUG2024.xlsx"
+    },
+    {
+      "source": "toxcast",
+      "url": "https://clowder.edap-cluster.com/api/files/68af6bd3e4b02565fc7c3aa4",
+      "path": "toxcast/cytotox_invitrodb_v4_3_AUG2024.xlsx"
+    },
+    {
+      "source": "toxcast",
+      "url": "https://clowder.edap-cluster.com/api/files/68af6bd3e4b02565fc7c3ab8",
+      "path": "toxcast/analytical_qc_invitrodb_v4_3_AUG2024.xlsx"
+    },
+    {
+      "source": "epa_page",
+      "url": "https://www.epa.gov/comptox-tools/exploring-toxcast-data",
+      "path": "toxcast/epa_exploring_toxcast_data.html"
+    },
+    {
+      "source": "tox21_page",
+      "url": "https://tripod.nih.gov/pubdata/",
+      "path": "tox21/tox21_public_data_page.html"
+    }
+  ],
+  "skipped_sources": [
+    {
+      "source": "drugbank",
+      "reason": "Requires authenticated account and license; cannot be crawled or redistributed automatically."
+    },
+    {
+      "source": "etox",
+      "reason": "Access is controlled/proprietary; public summaries are not sufficient for redistribution."
+    },
+    {
+      "source": "full_pubchem_compound",
+      "reason": "Full SDF mirror is very large and not necessary as ground truth. Index metadata is downloaded; shards should be pulled later by targeted CID/assay selection."
+    },
+    {
+      "source": "pubchem_bulk_sample",
+      "reason": "The initial Compound_000000001_000500000.sdf.gz transfer was stopped at 75 MB because the current NCBI connection was too slow and PubChem is an expansion/candidate source, not core gold ground truth."
+    },
+    {
+      "source": "full_zinc20",
+      "reason": "ZINC20 is a candidate universe only. Full mirror is not benchmark ground truth and should be downloaded separately only when needed."
+    }
+  ]
+}

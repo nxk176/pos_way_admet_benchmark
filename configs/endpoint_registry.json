@@ -1,0 +1,171 @@
+{
+  "schema_version": "posway-endpoint-registry-v0.1",
+  "endpoints": [
+    {
+      "endpoint_name": "RDKit_MolLogP",
+      "family": "proxy_physchem",
+      "task_type": "regression",
+      "canonical_unit": "unitless",
+      "preferred_direction": "decrease_for_solubility",
+      "gold_allowed": false,
+      "notes": "Proxy feature only; never use as experimental ADMET label."
+    },
+    {
+      "endpoint_name": "RDKit_TPSA",
+      "family": "proxy_physchem",
+      "task_type": "regression",
+      "canonical_unit": "A2",
+      "preferred_direction": "endpoint_dependent",
+      "gold_allowed": false,
+      "notes": "Useful as hard constraint or proxy feature."
+    },
+    {
+      "endpoint_name": "RDKit_QED",
+      "family": "proxy_druglikeness",
+      "task_type": "regression",
+      "canonical_unit": "unitless",
+      "preferred_direction": "increase",
+      "gold_allowed": false,
+      "notes": "Computed with RDKit QED; proxy feature only."
+    },
+    {
+      "endpoint_name": "RDKit_SA_Score",
+      "family": "proxy_synthesizability",
+      "task_type": "regression",
+      "canonical_unit": "unitless",
+      "preferred_direction": "decrease",
+      "gold_allowed": false,
+      "notes": "Computed with RDKit Contrib SA_Score; lower is easier to synthesize."
+    },
+    {
+      "endpoint_name": "RDKit_MW",
+      "family": "proxy_physchem",
+      "task_type": "regression",
+      "canonical_unit": "Da",
+      "preferred_direction": "constraint",
+      "gold_allowed": false,
+      "notes": "Computed molecular weight descriptor."
+    },
+    {
+      "endpoint_name": "RDKit_HAcceptors",
+      "family": "proxy_physchem",
+      "task_type": "regression",
+      "canonical_unit": "count",
+      "preferred_direction": "constraint",
+      "gold_allowed": false,
+      "notes": "Computed hydrogen-bond acceptor count."
+    },
+    {
+      "endpoint_name": "RDKit_HDonors",
+      "family": "proxy_physchem",
+      "task_type": "regression",
+      "canonical_unit": "count",
+      "preferred_direction": "constraint",
+      "gold_allowed": false,
+      "notes": "Computed hydrogen-bond donor count."
+    },
+    {
+      "endpoint_name": "RDKit_RotBonds",
+      "family": "proxy_physchem",
+      "task_type": "regression",
+      "canonical_unit": "count",
+      "preferred_direction": "constraint",
+      "gold_allowed": false,
+      "notes": "Computed rotatable bond count."
+    },
+    {
+      "endpoint_name": "logS_mol_L",
+      "family": "solubility",
+      "task_type": "regression",
+      "canonical_unit": "log10_mol_L",
+      "preferred_direction": "increase",
+      "gold_allowed": true,
+      "condition_fields": ["pH", "temperature", "method"]
+    },
+    {
+      "endpoint_name": "Caco2_logPapp_cm_s",
+      "family": "permeability",
+      "task_type": "regression",
+      "canonical_unit": "log10_cm_s",
+      "preferred_direction": "increase",
+      "gold_allowed": true,
+      "condition_fields": ["assay_system", "lab", "pH"]
+    },
+    {
+      "endpoint_name": "hERG_inhibition_probability",
+      "family": "cardiotoxicity",
+      "task_type": "binary_or_probability",
+      "canonical_unit": "probability",
+      "positive_class_definition": "higher value means higher hERG inhibition risk",
+      "preferred_direction": "decrease",
+      "gold_allowed": true
+    },
+    {
+      "endpoint_name": "hERG_pIC50",
+      "family": "cardiotoxicity",
+      "task_type": "regression",
+      "canonical_unit": "pIC50",
+      "positive_class_definition": "higher value means stronger hERG inhibition and higher cardiotoxicity risk",
+      "preferred_direction": "decrease",
+      "gold_allowed": true,
+      "condition_fields": ["assay_system", "cell_type", "organism"]
+    },
+    {
+      "endpoint_name": "Tox21_stress_pathway_risk",
+      "family": "toxicity",
+      "task_type": "binary_or_probability",
+      "canonical_unit": "probability",
+      "positive_class_definition": "higher value means higher stress-pathway activity risk",
+      "preferred_direction": "decrease",
+      "gold_allowed": true
+    },
+    {
+      "endpoint_name": "microsomal_clearance_mL_min_kg",
+      "family": "clearance",
+      "task_type": "regression",
+      "canonical_unit": "mL_min_kg",
+      "preferred_direction": "decrease",
+      "gold_allowed": true,
+      "condition_fields": ["species", "matrix", "system"]
+    },
+    {
+      "endpoint_name": "half_life_min",
+      "family": "pk",
+      "task_type": "regression",
+      "canonical_unit": "min",
+      "preferred_direction": "increase",
+      "gold_allowed": true,
+      "condition_fields": ["species", "matrix"]
+    },
+    {
+      "endpoint_name": "DRD2_pChEMBL",
+      "family": "target_bioactivity",
+      "task_type": "regression",
+      "canonical_unit": "pChEMBL",
+      "preferred_direction": "decrease",
+      "gold_allowed": true,
+      "condition_fields": ["target_chembl_id", "activity_type", "assay_system"],
+      "notes": "Human DRD2 target activity from ChEMBL target CHEMBL217."
+    },
+    {
+      "endpoint_name": "GSK3B_pChEMBL",
+      "family": "target_bioactivity",
+      "task_type": "regression",
+      "canonical_unit": "pChEMBL",
+      "preferred_direction": "decrease",
+      "gold_allowed": true,
+      "condition_fields": ["target_chembl_id", "activity_type", "assay_system"],
+      "notes": "Human GSK3 beta target activity from ChEMBL target CHEMBL262."
+    },
+    {
+      "endpoint_name": "JNK3_pChEMBL",
+      "family": "target_bioactivity",
+      "task_type": "regression",
+      "canonical_unit": "pChEMBL",
+      "preferred_direction": "decrease",
+      "gold_allowed": true,
+      "condition_fields": ["target_chembl_id", "activity_type", "assay_system"],
+      "notes": "Human JNK3/MAPK10 target activity from ChEMBL target CHEMBL2637."
+    }
+  ]
+}

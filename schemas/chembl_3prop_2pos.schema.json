@@ -1,0 +1,46 @@
+﻿{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local/posway/chembl_3prop_2pos.schema.json",
+  "title": "POS-WAY ChEMBL 3-Property 2-Positive Row",
+  "type": "object",
+  "required": [
+    "query_id",
+    "split",
+    "instruction",
+    "input_smiles_canon",
+    "input_connectivity_key",
+    "primary_endpoint",
+    "condition_bucket",
+    "num_property_objectives",
+    "primary_objective_json",
+    "preserved_property_json",
+    "local_constraints_json",
+    "num_positive_answers",
+    "positive_answer_smiles_json",
+    "positive_answers_json"
+  ],
+  "properties": {
+    "query_id": {"type": "string"},
+    "split": {"enum": ["train", "val", "test"]},
+    "instruction": {"type": "string"},
+    "input_smiles_canon": {"type": "string"},
+    "input_connectivity_key": {"type": "string"},
+    "input_chembl_id": {"type": "string"},
+    "primary_endpoint": {"type": "string"},
+    "condition_bucket": {"type": "string"},
+    "primary_direction": {"enum": ["increase", "decrease"]},
+    "num_property_objectives": {"const": 3},
+    "primary_objective_json": {"type": "string"},
+    "preserved_property_json": {"type": "string"},
+    "local_constraints_json": {"type": "string"},
+    "num_positive_answers": {"const": 2},
+    "positive_answer_smiles_json": {"type": "string"},
+    "positive_answers_json": {"type": "string"},
+    "mmp_cores_json": {"type": "string"},
+    "source_positive_sample_ids_json": {"type": "string"},
+    "selection_rule": {"type": "string"}
+  },
+  "additionalProperties": false
+}
+
+

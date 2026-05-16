@@ -1,0 +1,125 @@
+{
+  "schema_version": "posway-source-manifest-v0.1",
+  "built_from": {
+    "document": "C:/Users/ADMIN/Desktop/pos_way_01.pdf",
+    "document_title": "Building an ADMET and molecular-property editing dataset in single-question multi-answer format"
+  },
+  "sources": [
+    {
+      "name": "ChEMBL",
+      "role": "gold_backbone",
+      "recommended_release_from_pdf": "36",
+      "label_type": "experimental",
+      "access": "FTP bulk, web/API",
+      "urls": [
+        "https://www.ebi.ac.uk/chembl/",
+        "https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/latest/",
+        "https://chembl.gitbook.io/chembl-interface-documentation/downloads"
+      ],
+      "license_notes": "CC BY-SA 3.0; check ChEMBL FAQ for property calculation caveats.",
+      "use": "Primary source for curated bioactivity and ADMET-like assay labels."
+    },
+    {
+      "name": "PubChem",
+      "role": "assay_coverage_expansion",
+      "recommended_reference_date_from_pdf": "2024-09-12 counts in PubChem 2025 update",
+      "label_type": "experimental_or_public_assay",
+      "access": "FTP bulk, PUG-REST",
+      "urls": [
+        "https://pubchem.ncbi.nlm.nih.gov/docs/downloads",
+        "https://ftp.ncbi.nlm.nih.gov/pubchem/Compound/CURRENT-Full/SDF/"
+      ],
+      "license_notes": "Public/free NIH/NCBI resource; still preserve contributor provenance.",
+      "use": "Scale-up compounds, assay mapping, CID/SID/AID cross-reference."
+    },
+    {
+      "name": "BindingDB",
+      "role": "gold_binding_expansion",
+      "recommended_release_from_current_build": "202605 curated literature TSV",
+      "label_type": "experimental",
+      "access": "Public bulk TSV downloads",
+      "urls": [
+        "https://www.bindingdb.org/rwd/bind/chemsearch/marvin/Download.jsp",
+        "https://www.bindingdb.org/rwd/bind/downloads/BindingDB_BindingDB_Articles_202605_tsv.zip"
+      ],
+      "license_notes": "Public BindingDB download; preserve BindingDB, article DOI, PMID, and curation/date provenance.",
+      "use": "Curated target-binding Ki/IC50/Kd/EC50 measurements converted to pKi/pIC50/pKd/pEC50 endpoints."
+    },
+    {
+      "name": "ToxCast / DSSTox / CompTox",
+      "role": "gold_toxicity",
+      "recommended_release_from_pdf": "invitrodb v4.3, 2025-08",
+      "label_type": "experimental_or_public_hts",
+      "access": "EPA releases, CTX APIs, Dashboard downloads",
+      "urls": [
+        "https://www.epa.gov/comptox-tools/downloadable-computational-toxicology-data",
+        "https://www.epa.gov/comptox-tools/exploring-toxcast-data"
+      ],
+      "license_notes": "EPA open data; preserve release and assay provenance.",
+      "use": "Mechanistic toxicity labels, AC50/hit calls, assay annotations."
+    },
+    {
+      "name": "Tox21",
+      "role": "gold_toxicity_sparse",
+      "label_type": "experimental_or_public_hts",
+      "access": "Public data UI/resources",
+      "urls": [
+        "https://tox21.gov/",
+        "https://tox21.gov/resources/",
+        "https://tripod.nih.gov/tox21/pubdata"
+      ],
+      "license_notes": "Public federal resource; verify stable bulk download path at build time.",
+      "use": "Nuclear receptor, stress pathway, qHTS toxicity labels."
+    },
+    {
+      "name": "DrugBank",
+      "role": "drug_metadata_enrichment",
+      "label_type": "curated_metadata",
+      "access": "Authenticated download",
+      "urls": [
+        "https://dev.drugbank.com/guides/data",
+        "https://go.drugbank.com/releases"
+      ],
+      "license_notes": "Restricted; do not redistribute merged public artifacts without license review.",
+      "use": "Drug warnings, mechanisms, indications, route/admin metadata."
+    },
+    {
+      "name": "ZINC20",
+      "role": "candidate_universe",
+      "label_type": "unlabeled",
+      "access": "Tranche browser, mirrors",
+      "urls": [
+        "https://wiki.docking.org/index.php/Tranche_Browser",
+        "https://huggingface.co/datasets/Pixelatory/ZINC-20"
+      ],
+      "license_notes": "Verify terms on chosen distribution site/mirror.",
+      "use": "Seed/candidate/pretraining molecule reservoir, not ADMET ground truth."
+    },
+    {
+      "name": "TDC / MoleculeNet / AqSolDB / literature",
+      "role": "small_clean_endpoint_sets",
+      "label_type": "experimental_or_curated",
+      "access": "Dataset-specific",
+      "urls": [
+        "https://tdcommons.ai/benchmark/admet_group/overview/"
+      ],
+      "license_notes": "Check each dataset license before redistribution.",
+      "use": "Clean smaller endpoints and benchmark comparison."
+    },
+    {
+      "name": "ADMET predictors",
+      "role": "silver_imputation_and_scoring",
+      "label_type": "predicted",
+      "access": "Web/API/local depending on tool",
+      "urls": [
+        "https://admetlab3.scbdd.com/",
+        "https://lmmd.ecust.edu.cn/admetsar3/about.php",
+        "https://biosig.lab.uq.edu.au/pkcsm/",
+        "https://www.swissadme.ch/",
+        "https://chemprop.readthedocs.io/"
+      ],
+      "license_notes": "Store model/version/date/uncertainty/applicability domain; do not publish as experimental truth.",
+      "use": "Candidate ranking, silver labels, teacher-student pretraining, local imputers."
+    }
+  ]
+}

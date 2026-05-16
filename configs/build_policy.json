@@ -1,0 +1,49 @@
+{
+  "schema_version": "posway-build-policy-v0.1",
+  "structure_standardization": {
+    "store_raw_and_canonical": true,
+    "largest_fragment": true,
+    "neutralize_by_default": false,
+    "canonical_tautomer_by_default": false,
+    "preserve_stereo_status": true,
+    "exact_identity_key": "full_standard_inchikey",
+    "soft_grouping_key": "connectivity_key"
+  },
+  "label_tiers": {
+    "gold": ["experimental_curated", "experimental_public_hts_with_clear_protocol"],
+    "silver": ["predicted", "imputed", "public_assay_after_loose_filtering"],
+    "proxy": ["rdkit_descriptors", "rule_based_flags"]
+  },
+  "label_merge_order": [
+    "experimental_curated",
+    "experimental_noisy",
+    "predicted",
+    "proxy"
+  ],
+  "deduplication": {
+    "primary_key": ["exact_structure", "endpoint_name", "assay_condition_bucket"],
+    "replicate_aggregation": "median_or_robust_mean",
+    "keep_discordant_measurements": true
+  },
+  "confidence_scale": {
+    "1.00": "experimental curated, standardized unit, no adverse validity flag, replicate/source agreement",
+    "0.80": "single experimental source with clear assay condition",
+    "0.60": "public HTS or assay likely noisy but usable",
+    "0.50": "predicted, low uncertainty or in-domain",
+    "0.30": "proxy or predicted out-of-domain"
+  },
+  "split_policy": {
+    "default": "murcko_scaffold_split",
+    "all_answers_of_query_same_split": true,
+    "forbid_exact_inchikey_overlap_train_test": true,
+    "property_stratified_balancing": true,
+    "time_split_when_reliable_date_exists": true,
+    "strict_benchmark_requires_experimental_only_test": true
+  },
+  "answer_sampling": {
+    "max_answers_per_query": 8,
+    "keep_num_feasible_answers_all": true,
+    "diversity_axes": ["target_smiles", "transform_class", "descriptor_delta_bucket"]
+  }
+}
+
