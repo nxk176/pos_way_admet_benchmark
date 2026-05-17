@@ -56,7 +56,7 @@ def fail_if_missing(path: Path, label: str) -> None:
 
 def write_json(path: Path, payload: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    path.write_text(json.dumps(payload, indent=2, ensure_ascii=False, default=str) + "\n", encoding="utf-8")
 
 
 def chat_to_text(tokenizer: Any, messages: list[dict[str, str]], add_generation_prompt: bool) -> str:
