@@ -53,10 +53,15 @@ def canonical(smiles: str) -> str | None:
 
 
 def parse_model_payload(text: str | None) -> dict[str, Any] | None:
-    match = JSON_RE.search(text or "")
+    text = text or ""
+    match = JSON_RE.search(text)
     if not match:
-        return None
-    candidate = match.group(0)
+        start = text.find("{")
+        if start < 0:
+            return None
+        candidate = text[start:]
+    else:
+        candidate = match.group(0)
     try:
         payload = json.loads(candidate)
         return payload if isinstance(payload, dict) else None

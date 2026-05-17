@@ -20,6 +20,8 @@ data/
 raw/
 models/
 reports/
+/metrics/
+/predictions/
 *.gguf
 *.safetensors
 *.bin

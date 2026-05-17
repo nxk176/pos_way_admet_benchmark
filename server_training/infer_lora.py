@@ -65,10 +65,15 @@ def prompt_messages(row: dict[str, Any]) -> list[dict[str, str]]:
 
 
 def parse_json_payload(text: str) -> Any:
-    match = JSON_RE.search(text or "")
+    text = text or ""
+    match = JSON_RE.search(text)
     if not match:
-        return None
-    candidate = match.group(0)
+        start = text.find("{")
+        if start < 0:
+            return None
+        candidate = text[start:]
+    else:
+        candidate = match.group(0)
     try:
         return json.loads(candidate)
     except json.JSONDecodeError:
