@@ -59,6 +59,22 @@ def write_json(path: Path, payload: dict[str, Any]) -> None:
     path.write_text(json.dumps(payload, indent=2, ensure_ascii=False, default=str) + "\n", encoding="utf-8")
 
 
+def read_sft_messages(path: Path, max_rows: int = 0) -> list[dict[str, Any]]:
+    rows = []
+    with path.open("r", encoding="utf-8") as handle:
+        for line in handle:
+            if not line.strip():
+                continue
+            payload = json.loads(line)
+            messages = payload.get("messages")
+            if not isinstance(messages, list):
+                raise ValueError(f"Missing messages list in {path}: row {len(rows) + 1}")
+            rows.append({"messages": messages})
+            if max_rows and len(rows) >= max_rows:
+                break
+    return rows
+
+
 def chat_to_text(tokenizer: Any, messages: list[dict[str, str]], add_generation_prompt: bool) -> str:
     if hasattr(tokenizer, "apply_chat_template"):
         return tokenizer.apply_chat_template(
@@ -106,7 +122,7 @@ def main() -> int:
     fail_if_missing(args.val_jsonl, "validation JSONL")
 
     import torch
-    from datasets import load_dataset
+    from datasets import Dataset, DatasetDict
     from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
     from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig, Trainer, TrainingArguments
 
@@ -152,12 +168,12 @@ def main() -> int:
     model = get_peft_model(model, lora_config)
     model.print_trainable_parameters()
 
-    data_files = {"train": str(args.train_jsonl), "validation": str(args.val_jsonl)}
-    dataset = load_dataset("json", data_files=data_files)
-    if args.max_train_samples:
-        dataset["train"] = dataset["train"].select(range(min(args.max_train_samples, len(dataset["train"]))))
-    if args.max_val_samples:
-        dataset["validation"] = dataset["validation"].select(range(min(args.max_val_samples, len(dataset["validation"]))))
+    dataset = DatasetDict(
+        {
+            "train": Dataset.from_list(read_sft_messages(args.train_jsonl, args.max_train_samples)),
+            "validation": Dataset.from_list(read_sft_messages(args.val_jsonl, args.max_val_samples)),
+        }
+    )
 
     def tokenize_row(example: dict[str, Any]) -> dict[str, Any]:
         messages = example["messages"]
