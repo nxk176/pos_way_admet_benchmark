@@ -26,6 +26,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--bf16", action="store_true")
     parser.add_argument("--fp16", action="store_true")
     parser.add_argument("--trust-remote-code", action="store_true")
+    parser.add_argument(
+        "--device-map",
+        choices=["single-gpu", "auto"],
+        default="single-gpu",
+        help="Use single-gpu for one selected CUDA device. Use auto only when intentional offload is configured.",
+    )
     return parser.parse_args()
 
 
@@ -87,9 +93,17 @@ def main() -> int:
     tokenizer = AutoTokenizer.from_pretrained(args.base_model, trust_remote_code=args.trust_remote_code)
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
+
+    if args.device_map == "single-gpu":
+        if not torch.cuda.is_available():
+            raise SystemExit("ERROR: --device-map single-gpu requires a CUDA GPU.")
+        device_map: str | dict[str, int] = {"": 0}
+    else:
+        device_map = "auto"
+
     model = AutoModelForCausalLM.from_pretrained(
         args.base_model,
-        device_map="auto",
+        device_map=device_map,
         quantization_config=quantization_config,
         torch_dtype=dtype if (args.bf16 or args.fp16) else "auto",
         trust_remote_code=args.trust_remote_code,
