@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-source .venv_lora/bin/activate
+if [ -f .venv_lora/bin/activate ]; then
+  source .venv_lora/bin/activate
+else
+  echo "No .venv_lora found; using the currently active Python environment."
+fi
 
 export CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-0}"
 export TOKENIZERS_PARALLELISM=false
