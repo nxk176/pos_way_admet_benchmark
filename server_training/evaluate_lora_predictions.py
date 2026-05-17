@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
@@ -24,6 +25,12 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+JSON_RE = re.compile(r"\{.*\}", re.DOTALL)
+FIELD_RE = re.compile(r'"(?P<key>stronger_smiles|hard_negative_smiles|smiles)"\s*:\s*"(?P<value>[^"]*)"')
+ARRAY_FIELD_RE = re.compile(r'"(?P<key>edited_smiles|molecules|smiles)"\s*:\s*\[(?P<value>.*?)\]', re.DOTALL)
+ARRAY_ITEM_RE = re.compile(r'"([^"]*)"')
+
+
 def read_jsonl(path: Path) -> list[dict[str, Any]]:
     rows = []
     with path.open("r", encoding="utf-8") as handle:
@@ -43,6 +50,27 @@ def canonical(smiles: str) -> str | None:
     if mol is None:
         return None
     return Chem.MolToSmiles(mol, canonical=True, isomericSmiles=True)
+
+
+def parse_model_payload(text: str | None) -> dict[str, Any] | None:
+    match = JSON_RE.search(text or "")
+    if not match:
+        return None
+    candidate = match.group(0)
+    try:
+        payload = json.loads(candidate)
+        return payload if isinstance(payload, dict) else None
+    except json.JSONDecodeError:
+        pass
+
+    repaired: dict[str, Any] = {}
+    for field_match in FIELD_RE.finditer(candidate):
+        repaired[field_match.group("key")] = field_match.group("value").strip()
+    for field_match in ARRAY_FIELD_RE.finditer(candidate):
+        values = [item.strip() for item in ARRAY_ITEM_RE.findall(field_match.group("value")) if item.strip()]
+        if values:
+            repaired[field_match.group("key")] = values
+    return repaired or None
 
 
 def tanimoto(a: str, b: str) -> float | None:
@@ -85,6 +113,8 @@ def macro_average(groups: dict[str, dict[str, Any]]) -> dict[str, Any]:
 
 def predicted_smiles(row: dict[str, Any]) -> list[str]:
     payload = row.get("parsed_json")
+    if not isinstance(payload, dict):
+        payload = parse_model_payload(row.get("raw_output"))
     if not isinstance(payload, dict):
         return []
     if row.get("task") == "bindingdb_target_conditioned_triplet":

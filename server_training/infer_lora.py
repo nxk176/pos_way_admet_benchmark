@@ -9,6 +9,9 @@ from typing import Any
 
 
 JSON_RE = re.compile(r"\{.*\}", re.DOTALL)
+FIELD_RE = re.compile(r'"(?P<key>stronger_smiles|hard_negative_smiles|smiles)"\s*:\s*"(?P<value>[^"]*)"')
+ARRAY_FIELD_RE = re.compile(r'"(?P<key>edited_smiles|molecules|smiles)"\s*:\s*\[(?P<value>.*?)\]', re.DOTALL)
+ARRAY_ITEM_RE = re.compile(r'"([^"]*)"')
 
 
 def parse_args() -> argparse.Namespace:
@@ -65,10 +68,20 @@ def parse_json_payload(text: str) -> Any:
     match = JSON_RE.search(text or "")
     if not match:
         return None
+    candidate = match.group(0)
     try:
-        return json.loads(match.group(0))
+        return json.loads(candidate)
     except json.JSONDecodeError:
-        return None
+        pass
+
+    repaired: dict[str, Any] = {}
+    for field_match in FIELD_RE.finditer(candidate):
+        repaired[field_match.group("key")] = field_match.group("value").strip()
+    for field_match in ARRAY_FIELD_RE.finditer(candidate):
+        values = [item.strip() for item in ARRAY_ITEM_RE.findall(field_match.group("value")) if item.strip()]
+        if values:
+            repaired[field_match.group("key")] = values
+    return repaired or None
 
 
 def main() -> int:

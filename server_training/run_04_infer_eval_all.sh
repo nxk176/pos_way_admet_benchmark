@@ -12,6 +12,7 @@ export TOKENIZERS_PARALLELISM=false
 
 MAX_INFER_ROWS="${MAX_INFER_ROWS:-1000}"
 MAX_SEQ_LENGTH="${MAX_SEQ_LENGTH:-2048}"
+MAX_NEW_TOKENS="${MAX_NEW_TOKENS:-192}"
 
 QWEN14="models/hf/Qwen2.5-14B-Instruct"
 DEEPSEEK14="models/hf/DeepSeek-R1-Distill-Qwen-14B"
@@ -38,7 +39,7 @@ infer_eval () {
     --output-jsonl "$pred" \
     --max-rows "$MAX_INFER_ROWS" \
     --max-seq-length "$MAX_SEQ_LENGTH" \
-    --max-new-tokens 192 \
+    --max-new-tokens "$MAX_NEW_TOKENS" \
     --load-in-4bit \
     --bf16 \
     --temperature 0
