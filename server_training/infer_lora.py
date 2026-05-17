@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import random
 import re
 from datetime import datetime, timezone
 from pathlib import Path
@@ -21,6 +22,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--input-jsonl", type=Path, required=True)
     parser.add_argument("--output-jsonl", type=Path, required=True)
     parser.add_argument("--max-rows", type=int, default=0)
+    parser.add_argument(
+        "--max-rows-per-source",
+        type=int,
+        default=0,
+        help="If >0, evaluate up to this many rows per source_dataset after deterministic shuffling.",
+    )
+    parser.add_argument("--seed", type=int, default=29)
     parser.add_argument("--max-seq-length", type=int, default=2048)
     parser.add_argument("--max-new-tokens", type=int, default=192)
     parser.add_argument("--temperature", type=float, default=0.0)
@@ -46,6 +54,23 @@ def read_jsonl(path: Path, max_rows: int = 0) -> list[dict[str, Any]]:
                 rows.append(json.loads(line))
                 if max_rows and len(rows) >= max_rows:
                     break
+    return rows
+
+
+def select_rows(rows: list[dict[str, Any]], max_rows: int, max_rows_per_source: int, seed: int) -> list[dict[str, Any]]:
+    if max_rows_per_source > 0:
+        rng = random.Random(seed)
+        grouped: dict[str, list[dict[str, Any]]] = {}
+        for row in rows:
+            grouped.setdefault(str(row.get("source_dataset") or "unknown"), []).append(row)
+        selected: list[dict[str, Any]] = []
+        for source in sorted(grouped):
+            items = list(grouped[source])
+            rng.shuffle(items)
+            selected.extend(items[:max_rows_per_source])
+        return selected
+    if max_rows > 0:
+        return rows[:max_rows]
     return rows
 
 
@@ -129,7 +154,7 @@ def main() -> int:
     model = PeftModel.from_pretrained(model, str(args.adapter_dir))
     model.eval()
 
-    rows = read_jsonl(args.input_jsonl, args.max_rows)
+    rows = select_rows(read_jsonl(args.input_jsonl), args.max_rows, args.max_rows_per_source, args.seed)
     for idx, row in enumerate(rows, start=1):
         messages = prompt_messages(row)
         if hasattr(tokenizer, "apply_chat_template"):
@@ -159,9 +184,16 @@ def main() -> int:
             "id": row.get("id"),
             "task": row.get("task"),
             "source_dataset": row.get("source_dataset"),
+            "split": row.get("split"),
             "input_smiles": row.get("input_smiles"),
             "gold_smiles": row.get("gold_smiles"),
             "hard_negative_smiles": row.get("hard_negative_smiles"),
+            "primary_endpoint": row.get("primary_endpoint"),
+            "primary_objective": row.get("primary_objective"),
+            "preserved_property": row.get("preserved_property"),
+            "local_constraints": row.get("local_constraints"),
+            "positive_answers": row.get("positive_answers"),
+            "source_positive_sample_ids": row.get("source_positive_sample_ids"),
             "raw_output": text,
             "parsed_json": parse_json_payload(text),
             "created_at_utc": datetime.now(timezone.utc).isoformat(),

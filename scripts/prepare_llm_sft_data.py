@@ -136,6 +136,11 @@ def edit_sft_row(row: dict[str, str], source: str) -> dict[str, Any]:
         "input_smiles": clean_text(row.get("input_smiles_canon")),
         "gold_smiles": positive_smiles(row)[:2],
         "primary_endpoint": clean_text(row.get("primary_endpoint")),
+        "primary_objective": safe_json(row.get("primary_objective_json"), {}),
+        "preserved_property": safe_json(row.get("preserved_property_json"), {}),
+        "local_constraints": safe_json(row.get("local_constraints_json"), {}),
+        "positive_answers": safe_json(row.get("positive_answers_json"), []),
+        "source_positive_sample_ids": safe_json(row.get("source_positive_sample_ids_json"), []),
         "messages": [
             {"role": "system", "content": edit_system_prompt()},
             {"role": "user", "content": edit_user_prompt(row, source)},

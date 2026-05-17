@@ -9,16 +9,12 @@ fi
 
 PRED_DIR="${PRED_DIR:-reports/server_training/predictions}"
 METRIC_DIR="${METRIC_DIR:-reports/server_training/metrics}"
-
 ADMET_TEST="${ADMET_TEST:-data/llm_sft/admet_edit_3prop_merged/test.jsonl}"
-BIND_SEEN="${BIND_SEEN:-data/llm_sft_bindingdb_full/bindingdb_target_conditioned/test_seen_target.jsonl}"
-BIND_UNSEEN="${BIND_UNSEEN:-data/llm_sft_bindingdb_full/bindingdb_target_conditioned/test_unseen_target.jsonl}"
 
 mkdir -p "$METRIC_DIR"
 
 evaluate_one () {
   local tag="$1"
-  local reference_jsonl="$2"
   local pred="$PRED_DIR/${tag}.jsonl"
   local metrics="$METRIC_DIR/${tag}.metrics.json"
 
@@ -29,13 +25,9 @@ evaluate_one () {
 
   python server_training/evaluate_lora_predictions.py \
     --predictions "$pred" \
-    --reference-jsonl "$reference_jsonl" \
+    --reference-jsonl "$ADMET_TEST" \
     --out "$metrics"
 }
 
-evaluate_one "qwen2.5-14b-admet-edit_test" "$ADMET_TEST"
-evaluate_one "deepseek14b-admet-edit_test" "$ADMET_TEST"
-evaluate_one "qwen2.5-14b-bindingdb_seen" "$BIND_SEEN"
-evaluate_one "qwen2.5-14b-bindingdb_unseen" "$BIND_UNSEEN"
-evaluate_one "deepseek14b-bindingdb_seen" "$BIND_SEEN"
-evaluate_one "deepseek14b-bindingdb_unseen" "$BIND_UNSEEN"
+evaluate_one "qwen2.5-14b-admet-edit_test"
+evaluate_one "deepseek14b-admet-edit_test"
